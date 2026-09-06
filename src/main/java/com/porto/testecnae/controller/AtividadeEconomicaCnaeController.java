@@ -1,8 +1,10 @@
 package com.porto.testecnae.controller;
 
 import com.porto.testecnae.dto.AtividadeEconomicaCnaeResponse;
+import com.porto.testecnae.exceptions.CnaeNotFoundException;
 import com.porto.testecnae.service.AtividadeEconomicaCnaeService;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +31,14 @@ public class AtividadeEconomicaCnaeController {
 
     @GetMapping("/codigo")
     public AtividadeEconomicaCnaeResponse buscarPorCodigo(@RequestParam String codigo) {
-        return service.buscarPorCodigo(codigo);
+
+        // eu poderia trabalhar com responseEntity e criar um DTO padrão para respostas com erro para um codigo mais limpo,
+        // porém estou mantendo o padrão já encontrado no codigo
+        // para poder mostrar a mensagem, dado que por segurança fica abstraido, decidi criar um controller advice para tratar exceções
+        AtividadeEconomicaCnaeResponse response = service.buscarPorCodigo(codigo);
+        if (response == null) {
+            throw new CnaeNotFoundException( "Codigo CNAE não encontrado para o código: " + codigo);
+        }
+        return response;
     }
 }

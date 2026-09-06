@@ -13,4 +13,5 @@ public interface CadastroSecundarioService {
     AtividadeEconomicaCnaeResponse validarCnae(String codigoCnae);
 
     List<CadastroSecundarioResponse> listarTodos();
+
 }

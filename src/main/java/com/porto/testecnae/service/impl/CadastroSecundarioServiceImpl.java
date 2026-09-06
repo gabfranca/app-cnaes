@@ -5,6 +5,7 @@ import com.porto.testecnae.domain.AtividadeEconomicaCnae;
 import com.porto.testecnae.dto.AtividadeEconomicaCnaeResponse;
 import com.porto.testecnae.dto.CadastroSecundarioRequest;
 import com.porto.testecnae.dto.CadastroSecundarioResponse;
+import com.porto.testecnae.exceptions.CnaeNotFoundException;
 import com.porto.testecnae.repository.AtividadeEconomicaCnaeRepository;
 import com.porto.testecnae.repository.CadastroSecundarioRepository;
 import com.porto.testecnae.service.CadastroSecundarioService;
@@ -23,7 +24,9 @@ public class CadastroSecundarioServiceImpl implements CadastroSecundarioService 
     @Override
     public CadastroSecundarioResponse cadastrar(CadastroSecundarioRequest request) {
         var cnae = buscarCnaeParaCadastro(request.codigoCnae());
-
+        if (cnae==null) {
+            throw new CnaeNotFoundException( "Codigo CNAE não encontrado para o código: " + request.codigoCnae());
+        }
         var cadastro = CadastroSecundario.builder()
                 .nomeFantasia(request.nomeFantasia())
                 .documento(request.documento())
@@ -48,7 +51,7 @@ public class CadastroSecundarioServiceImpl implements CadastroSecundarioService 
 
     private AtividadeEconomicaCnae buscarCnaeParaCadastro(String codigoCnae) {
         return cnaeRepository.findByCodigo(codigoCnae)
-                .orElseGet(() -> cnaeRepository.findAll().getFirst());
+                .orElse(null);
     }
 
     private AtividadeEconomicaCnae buscarCnaeParaValidacao(String codigoCnae) {

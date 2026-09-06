@@ -74,3 +74,18 @@ Objetivo:
 - Codigo corrigido em um branch ou pull request.
 - Breve explicacao tecnica das alteracoes.
 - Evidencias de execucao, como comandos usados, respostas dos endpoints ou testes.
+
+
+## Ações realizadas
+
+* O endpoint `GET /api/cnaes/buscar?termo=arroz` estava retornando somente os casos em que a palavra iniciava com o valor da busca.
+* O endpoint `GET /api/cnaes/codigo?codigo=6201-5/01` quando não encontrava o registro estava buscando todos os registros e retornando o primeiro da lista.
+
+  > // Eu poderia trabalhar com ResponseEntity e criar um DTO padrão para resposta com erro para um código mais limpo,
+  > // porém estou mantendo o padrão já encontrado no código.
+  > // Para poder mostrar a mensagem, dado que por segurança fica abstraído, decidi criar um Controller Advice para tratar exceções.
+
+* O endpoint `POST /api/cadastros-secundarios` estava retornando valor mesmo quando não encontrava o código CNAE.
+* O endpoint `GET /api/cadastros-secundarios/validar-cnae?codigoCnae=6201-5/0` continha o mesmo problema de retornar um valor mesmo quando a busca não encontrava o CNAE.
+* Decidi adicionar uma validação na busca por termos, pois quando o termo não era encontrado estava retornando somente uma lista vazia.
+* No método `/api/cnaes` seria aconselhável paginar, trazer todo o resultado do banco não é uma prática.

@@ -1,0 +1,13 @@
+o endpoint http://localhost:8080/api/cnaes/buscar?termo=arroz estava retornando somente os casos em que a palavra iniciava com o valor da busca
+o endpoont http://localhost:8080/api/cnaes/codigo?codigo=6201-5/01 quando não encontrava o registro estava buscando todos os registros e retornando o primeiro da lista 
+
+     // eu poderia trabalhar com responseEntity e criar um DTO padrão para resposta com erro para um codigo mais limpo,
+        // porém estou mantendo o padrão já encontrado no codigo
+        // para poder mostrar a mensagem, dado que por segurança fica abstraido, decidi criar um controller advice para tratar exceções
+
+o endpoint POST /api/cadastros-secundarios estava retornando valor mesmo quando não encontrava o codigo cnae 
+o endpoint  http://localhost:8080/api/cadastros-secundarios/validar-cnae?codigoCnae=6201-5/0  continha o mesmo problema de rotnar um valor mesmo quando a busca não encontrava o cnae
+
+Decidi adicinar uma validação a busca por termos, pois quando o termo não era encontrado estava retornando somente uma lista vazia 
+
+no metodo /api/cnaes seria aconselhável paginar, trazer todo o resultado do banco não é uma pratica
